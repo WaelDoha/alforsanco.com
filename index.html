@@ -842,7 +842,7 @@
                 </div>
 
                 <div class="contact-form fade-in">
-                    <form id="contactForm">
+                    <form id="contactForm" action="https://formspree.io/f/xykgqwvo" method="POST">
                         <div class="form-group">
                             <label for="name">Full Name *</label>
                             <input type="text" id="name" name="name" required>
@@ -1068,11 +1068,21 @@
         window.onclick   = e => { if (e.target === modal) closeBtn.onclick(); };
 
         /* ----------  CONTACT FORM  ---------- */
-        document.getElementById('contactForm').addEventListener('submit', e => {
-            e.preventDefault();
-            alert('Thank you for your message! We will get back to you within 24 hours.');
-            e.target.reset();
-        });
+       const contactForm = document.getElementById('contactForm');
+        contactForm.addEventListener('submit', async (e) => {
+         e.preventDefault();
+       const response = await fetch(contactForm.action, {
+        method: 'POST',
+        body: new FormData(contactForm),
+        headers: { Accept: 'application/json' }
+    });
+    if (response.ok) {
+        alert('Thank you! Your message has been sent to info@alforsanco.com.');
+        contactForm.reset();
+    } else {
+        alert('Oops! Something went wrong. Please try again.');
+    }
+});
 
         /* ----------  SMALL POLISH  ---------- */
         document.querySelectorAll('.btn').forEach(btn => {
